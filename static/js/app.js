@@ -66,15 +66,26 @@ function updatePlot(dataset) {
         var samples = data.samples.map(data => data);
 
         // filter the data
-        var filteredSet = samples.filter(sampleObj => sampleObj.id == dataset);
+        var filteredSample = samples.filter(sampleObj => sampleObj.id == dataset);
+        var filteredMeta = metadata.filter(metaObj => metaObj.id == dataset);
 
         // 'unpack' the data
-        var filteredData = filteredSet[0];
+        var filteredSampleData = filteredSample[0];
+        var filteredMetaData = filteredMeta[0];
+
+        // populate the panel
+        var panel = d3.select("#sample-metadata");
+        // clear existing metadata
+        panel.html("");
+
+        Object.entries(filteredMetaData).forEach(([key, value]) => {
+            panel.append("h6").text(`${key}:${value}`);
+        })
 
         // seperate IDs, values, and labels
-        var otu_ids = filteredData.otu_ids;
-        var sample_values = filteredData.sample_values;
-        var labels = filteredData.otu_labels;
+        var otu_ids = filteredSampleData.otu_ids;
+        var sample_values = filteredSampleData.sample_values;
+        var labels = filteredSampleData.otu_labels;
 
         // console.log(otu_ids); // log the data because I can
 
